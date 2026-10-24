@@ -1,24 +1,21 @@
+
 name: Secure DevSecOps Pipeline
 
 on:
   push:
     branches:
       - master
-  workflow_dispatch:
-
 jobs:
   build_and_package:
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ${{ matrix.os }}
+
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [22, 24]
         os:
-          - windows-latest
-          - ubuntu-latest
-        language: 
-          - javascript-typescript
-          
+          - ubuntu-slim
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -36,22 +33,14 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: echo "test"
+        run: echo "test completed"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-1
+          name: artifact-node-${{ matrix.node-version }}-${{ matrix.os }}
           retention-days: 7
           path: |
-            build
+            build/
             package*.json
-
-      - name: Deployment
-        run: echo "app is deployed to container"
-
-      - name: Rollback
-        if: failure()
-        run: echo "kubectl rollout undo deployment zomato"
-
-
+          if-no-files-found: error

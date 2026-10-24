@@ -27,8 +27,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: 'javascript-typescript, python' # Comma-separated list of languages
-          queries: security-extended 
+          languages: ${{ matrix.language }}
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3

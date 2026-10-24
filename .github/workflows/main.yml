@@ -47,3 +47,10 @@ jobs:
           retention-days: 7
           path: | 
             package* 
+
+      - name: Deployment
+        run: echo "app is deployed to container"
+
+      - name: Rollback
+        if: failure()
+        run: echo "kubectl rollout undo deployment zomato"

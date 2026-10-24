@@ -1,67 +1,54 @@
-name: Secure DevSecOps Pipeline 
+name: Secure DevSecOps Pipeline
 
-on: 
-  push: 
-    branches: 
-      - master 
-  workflow_dispatch: 
- 
-jobs: 
-  build_and_package: 
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build_and_package:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    runs-on: ubuntu-slim 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+        os:
+          - windows-latest
+          - ubuntu-latest
+        language: 
+          - javascript-typescript
+          
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    permissions: 
-      actions: read 
-      contents: write 
-      security-events: write # Required to upload findings to the Security tab 
-
-runs-on: ${{ matrix.os }} 
- 
-strategy: 
-  matrix: 
-
-  os: 
-      - ubuntu-latest 
-      - windows-latest 
-    node-version: 
-      - 18 
-      - 20 
-      - 22 
-    language: 
-      - javascript-typescript 
- 
-
-
-
-    steps: 
-      - name: Checkout Code 
-        uses: actions/checkout@v4 
-         
-      - name: Cache NPM global directory
-        uses: actions/cache@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-             ${{ runner.os }}-npm-
-             
-      - name: BUILD 
-        run: npm install 
+          node-version: ${{ matrix.node-version }}
+          cache: npm
 
-      - name: TEST 
-        run: echo "code is tested!" 
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Artifact upload 
-        uses: actions/upload-artifact@v7 
-        with: 
-          name: artifact-1 
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: echo "test"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-1
           retention-days: 7
-          path: | 
-            package* 
+          path: |
+            build
+            package*.json
 
       - name: Deployment
-        run: echo "app is deployed to container
+        run: echo "app is deployed to container"
 
       - name: Rollback
         if: failure()

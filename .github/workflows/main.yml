@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch: 
+  
 jobs:
   build_and_package:
     runs-on: ${{ matrix.os }}

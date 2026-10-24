@@ -49,7 +49,7 @@ jobs:
             package* 
 
       - name: Deployment
-        run: echo "app is deployed to container"
+        run: echo "app is deployed to container
 
       - name: Rollback
         if: failure()

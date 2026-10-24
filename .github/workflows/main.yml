@@ -18,6 +18,20 @@ jobs:
       - name: Checkout Code 
         uses: actions/checkout@v4 
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'javascript-typescript, python' # Comma-separated list of languages
+          queries: security-extended 
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
+          
       - name: Cache NPM global directory
         uses: actions/cache@v4
         with:
@@ -25,7 +39,7 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
              ${{ runner.os }}-npm-
-        
+             
       - name: BUILD 
         run: npm install 
 

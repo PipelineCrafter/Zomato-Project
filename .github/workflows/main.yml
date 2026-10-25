@@ -8,8 +8,18 @@ on:
 
 jobs:
   first_job:
+    name: Learn Jobs and Steps
     runs-on: ubuntu-slim
- 
+
     steps:
-      - name: Print success message
-        run: echo "My first GitHub Actions pipeline is running successfully!"
+      - name: Step 1 - Identify the runner
+        run: echo "I am running on a GitHub-hosted runner"
+
+      - name: Step 2 - Print working directory
+        run: pwd
+
+      - name: Step 3 - List files
+        run: ls -la
+
+      - name: Step 4 - Print success message
+        run: echo "All steps completed successfully!"

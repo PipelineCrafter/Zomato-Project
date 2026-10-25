@@ -1,48 +1,15 @@
 
-name: Secure DevSecOps Pipeline
+name: GitHub Actions Practical Lab
 
 on:
   push:
     branches:
       - master
-  workflow_dispatch: 
-  
+
 jobs:
-  build_and_package:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [22, 24]
-        os:
-          - ubuntu-slim
-
+  first_job:
+    runs-on: ubuntu-slim
+ 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Test
-        run: echo "test completed"
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact-node-${{ matrix.node-version }}-${{ matrix.os }}
-          retention-days: 7
-          path: |
-            build/
-            package*.json
-          if-no-files-found: error
+      - name: Print success message
+        run: echo "My first GitHub Actions pipeline is running successfully!"

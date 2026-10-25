@@ -4,30 +4,17 @@ name: GitHub Actions Practical Lab
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   runner_lab:
-    name: Explore the Runner
     runs-on: ubuntu-latest
-
     steps:
-      - name: Step 1 - Identify the runner
-        run: |
-          echo "Runner operating system:"
-          uname -s
-          echo "Runner architecture:"
-          uname -m
+      - name: Identify runner
+        run: uname -s
 
-      - name: Step 2 - Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Step 3 - Show workspace
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Repository files:"
-          ls -la
-
-      - name: Step 4 - Display repository name
-        run: echo "Repository: $GITHUB_REPOSITORY"
+      - name: Show files
+        run: ls -la

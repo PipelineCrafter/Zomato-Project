@@ -4,7 +4,7 @@ name: GitHub Actions Practical Lab
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   runner_lab:

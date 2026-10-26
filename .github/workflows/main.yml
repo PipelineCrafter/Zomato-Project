@@ -1,33 +1,39 @@
 
-name: GitHub Actions Practical Lab
+name: Zomato Project CI/CD
 
 on:
   push:
     branches:
       - master
     paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/main.yml'
-  workflow_dispatch: 
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  status_check_lab:
+  build:
+    name: Build React Application
     runs-on: ubuntu-latest
 
     steps:
-      - name: Step 1 - Successful step
-        run: echo "Step 1 succeeded"
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Step 2 - Run on success
-        if: success()
-        run: echo "Previous steps succeeded"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-      - name: Step 3 - Successful step
-        run: echo "Step 3 succeeded"
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Step 4 - Run on failure
-        if: failure()
-        run: echo "A previous step failed"
+      - name: Build application
+        run: npm run build
 
-      - name: Step 5 - Always run
-        if: always()
-        run: echo "This step runs regardless of success or failure"

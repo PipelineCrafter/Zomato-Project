@@ -18,8 +18,8 @@ jobs:
         if: success()
         run: echo "Previous steps succeeded"
 
-      - name: Step 3 - Intentional failure
-        run: exit 1
+      - name: Step 3 - Successful step
+        run: echo "Step 3 succeeded"
 
       - name: Step 4 - Run on failure
         if: failure()

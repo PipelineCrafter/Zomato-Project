@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/workflows/main.yml'
+  workflow_dispatch: 
 
 jobs:
   status_check_lab:

@@ -6,5 +6,5 @@ import App from "./App";
 test("renders the Zomato application", () => {
   render(<App />);
 
-  expect(screen.getByRole("main")).toBeInTheDocument();
+  expect(screen.getByTestId("zomato-app")).toBeInTheDocument();
 });

@@ -9,7 +9,7 @@ import Card from "./components/Card/Card";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" data-testid="zomzto-app">
       <Header />
       <Card />
       <Collection />

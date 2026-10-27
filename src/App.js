@@ -6,7 +6,6 @@ import CTA from "./components/CTA/CTA";
 import Cities from "./components/Cities/Cities";
 import Collection from "./components/Collections/Collection";
 import Card from "./components/Card/Card";
-
 function App() {
   return (
     <div className="App" data-testid="zomzto-app">

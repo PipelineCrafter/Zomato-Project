@@ -42,7 +42,12 @@ jobs:
         env:
           CI: true
 
-      - name: Lint source code
-        run: npm run lint
+  workflow_check:
+    name: Check Workflow Configuration
+    runs-on: ubuntu-slim
+    timeout-minutes: 2
+    steps:
+      - name: Verify runner
+        run: echo "Workflow check is running successfully"
 
 

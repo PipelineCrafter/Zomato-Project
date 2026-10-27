@@ -41,6 +41,6 @@ jobs:
 
     steps:
       - name: Confirm build completed
-        run: echo "The build job succeeded: this job can proced"
+        run: echo "The build job succeeded; this job can proceed."
 
 

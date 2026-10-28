@@ -20,6 +20,7 @@ jobs:
   build:
     name: Build React Application
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -31,8 +32,25 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build application
-        run: npm run 
+        run: npm run build
+
+      - name: Run tests
+        run: npm test -- --watchAll=false
+        env:
+          CI: true
+
+  workflow_check:
+    name: Check Workflow Configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Verify runner
+        run: echo "Workflow check is running successfully"
 
   post_build_check:
     name: Post-Build Check
@@ -40,7 +58,5 @@ jobs:
     needs: [build, workflow_check]
 
     steps:
-      - name: Confirm build completed
-        run: echo "The build job succeeded; this job can proceed."
-
-
+      - name: Confirm prerequisites completed
+        run: echo "Build and workflow checks passed."

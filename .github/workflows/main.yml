@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22]
+        os: [ubuntu-slim, windows-latest]
 
     steps:
       - name: Checkout repository
@@ -34,7 +34,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -46,7 +46,7 @@ jobs:
 
   workflow_check:
     name: Check Workflow Configuration
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 2
 
     steps:
@@ -55,7 +55,7 @@ jobs:
 
   post_build_check:
     name: Post-Build Check
-    runs-on: ubuntu-slim
+    runs-on: ${{ matrix.os }}
     needs: [build, workflow_check]
     if: always()
 
@@ -67,7 +67,7 @@ jobs:
   
   failure_report:
     name: Failure Diagnostic
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: [build, workflow_check, post_build_check]
     if: failure()
 

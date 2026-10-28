@@ -54,6 +54,14 @@ jobs:
         run: |
           echo "Branch: $GITHUB_REF_NAME"
           echo "Event: $GITHUB_EVENT_NAME"
+     
+      - name: Display expression context
+        run: |
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Workflow: ${{ github.workflow }}"
+
 
   post_build_check:
     name: Post-Build Check

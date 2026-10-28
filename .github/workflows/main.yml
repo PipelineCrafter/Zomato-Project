@@ -18,15 +18,22 @@ permissions:
 
 jobs:
   build:
-    name: Build React Application
-    runs-on: ubuntu-latest
+    name: Build (${{ matrix.os }}, Node ${{ matrix.node-version }})
+    runs-on: ${{ matrix.os }} 
     timeout-minutes: 10
     
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         os: [ubuntu-slim, windows-latest]
         node-version: [20, 22]
+        exclude:
+          - os: windows-latest
+            node-version: 20
+        include:
+          - os: windows-latest
+            node-version: 22
 
     steps:
       - name: Checkout repository
@@ -35,7 +42,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ matrix.node-version }}
           cache: npm
 
       - name: Install dependencies

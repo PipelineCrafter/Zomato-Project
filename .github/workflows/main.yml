@@ -46,7 +46,7 @@ jobs:
 
   workflow_check:
     name: Check Workflow Configuration
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-slim
     timeout-minutes: 2
 
     steps:
@@ -55,7 +55,7 @@ jobs:
 
   post_build_check:
     name: Post-Build Check
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-slim
     needs: [build, workflow_check]
     if: always()
 
@@ -67,7 +67,7 @@ jobs:
   
   failure_report:
     name: Failure Diagnostic
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     needs: [build, workflow_check, post_build_check]
     if: failure()
 

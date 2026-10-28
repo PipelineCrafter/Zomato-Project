@@ -49,9 +49,21 @@ jobs:
 
   post_build_check:
     name: Post-Build Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: [build, workflow_check]
 
     steps:
       - name: Confirm prerequisites completed
         run: echo "Build and workflow checks passed."
+
+  
+  success_report:
+    name: Success Report
+    runs-on: ubuntu-slim
+    needs: [build, workflow_check, post_build_check]
+    if: success()
+
+    steps:
+      - name: Report success
+        run: echo "All prerequisite jobs succeeded."
+

@@ -30,10 +30,7 @@ jobs:
         node-version: [20, 22]
         exclude:
           - os: windows-latest
-            node-version: 20
-        include:
-          - os: windows-latest
-            node-version: 22
+            node-version: [20, 22]
 
     steps:
       - name: Checkout repository
@@ -72,15 +69,15 @@ jobs:
         run: echo "Build and workflow checks passed."
 
   
-  
-  failure_report:
-    name: Failure Diagnostic
-    runs-on: ubuntu-latest
+  success_report:
+    name: Success Report
+    runs-on: ubuntu-slim
     needs: [build, workflow_check, post_build_check]
-    if: failure()
+    if: success()
 
     steps:
-      - name: Report failure
-        run: echo "At least one prerequisite job failed."
+      - name: Report success
+        run: echo "All prerequisite jobs succeeded."
+
 
 

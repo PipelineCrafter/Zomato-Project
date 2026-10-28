@@ -55,6 +55,7 @@ jobs:
     name: Post-Build Check
     runs-on: ubuntu-slim
     needs: [build, workflow_check]
+    if: always()
 
     steps:
       - name: Confirm prerequisites completed

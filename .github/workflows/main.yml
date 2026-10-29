@@ -49,7 +49,7 @@ jobs:
       
   workflow_check:
     name: Check Workflow Configuration
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 2
     outputs:
       build_label: ${{ steps.metadata.outputs.build_label }}
@@ -84,11 +84,11 @@ jobs:
         run: echo "Prerequisite jobs have completed."
 
       - name: Display build label from another job
-        run: echo "Label received: ${{ needs.workflow_check.outputs.build_label }}"   
+        run: 'echo "Label received: ${{ needs.workflow_check.outputs.build_label }}"'   
 
   success_report:
     name: Success Report
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     needs: [build, workflow_check, post_build_check]
     if: success()
 

@@ -17,16 +17,17 @@ permissions:
   contents: read
 
 jobs:
+  
   build:
     name: Build (${{ matrix.os }}, Node ${{ matrix.node-version }})
-    runs-on: ${{ matrix.os }} 
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 10
-    
+
     strategy:
       fail-fast: false
       max-parallel: 2
       matrix:
-        os: [ubuntu-slim ] 
+        os: [ubuntu-latest]
         node-version: [22]
 
     steps:
@@ -38,11 +39,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
       
   workflow_check:
     name: Check Workflow Configuration
     runs-on: ubuntu-slim
     timeout-minutes: 2
+    outputs:
+      build_label: ${{ steps.metadata.outputs.build_label }}
 
     steps:
       - name: Verify runner
@@ -61,19 +71,21 @@ jobs:
 
       - name: Display generated label
         run: echo "Generated label is ${{ steps.metadata.outputs.build_label }}"
-
-     
+ 
+  
   post_build_check:
     name: Post-Build Check
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     needs: [build, workflow_check]
     if: always()
 
     steps:
       - name: Confirm prerequisites completed
-        run: echo "Build and workflow checks passed."
+        run: echo "Prerequisite jobs have completed."
 
-  
+      - name: Display build label from another job
+        run: echo "Label received: ${{ needs.workflow_check.outputs.build_label }}"   
+
   success_report:
     name: Success Report
     runs-on: ubuntu-slim

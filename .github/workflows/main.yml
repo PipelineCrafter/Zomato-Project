@@ -38,9 +38,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
       
   workflow_check:
     name: Check Workflow Configuration
@@ -57,6 +54,14 @@ jobs:
       - name: Run only on push
         if: ${{ github.event_name == 'push' }}
         run: echo "This step runs because the workflow was triggered by a push."
+      
+      - name: Generate build label
+        id: metadata
+        run: echo "build_label=zomato-${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Display generated label
+        run: echo "Generated label is ${{ steps.metadata.outputs.build_label }}"
+
      
   post_build_check:
     name: Post-Build Check

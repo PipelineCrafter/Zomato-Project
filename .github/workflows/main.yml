@@ -71,8 +71,13 @@ jobs:
 
       - name: Display generated label
         run: echo "Generated label is ${{ steps.metadata.outputs.build_label }}"
+      
+      - name: Set environment variable
+        run: echo "APP_ENV=development" >> "$GITHUB_ENV"
+
+      - name: Read environment variable
+        run: echo "Application environment is $APP_ENV"
  
-  
   post_build_check:
     name: Post-Build Check
     runs-on: ubuntu-latest

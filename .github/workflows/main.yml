@@ -46,15 +46,26 @@ jobs:
 
       - name: Build application
         run: npm run build
-      
-      - name: Upload React build artifact
-        uses: actions/upload-artifact@v4
+  
+  verify_artifact:
+    name: Verify Build Artifact
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download React build artifact
+        uses: actions/download-artifact@v4
         with:
           name: zomato-react-build
-          path: build/
-          if-no-files-found: error
-          retention-days: 7
-      
+          path: downloaded-build/
+
+      - name: Verify downloaded files
+        run: |
+          echo "Checking downloaded React build..."
+          test -f downloaded-build/index.html
+          echo "Artifact verification succeeded."
+          ls -la downloaded-build/
+    
   workflow_check:
     name: Check Workflow Configuration
     runs-on: ubuntu-latest

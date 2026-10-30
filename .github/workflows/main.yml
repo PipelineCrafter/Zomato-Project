@@ -108,6 +108,16 @@ jobs:
 
       - name: Read environment variable
         run: echo "Application environment is $APP_ENV"
+      - name: Verify GitHub secret is available
+        env:
+          DEMO_SECRET: ${{ secrets.CI_DEMO_SECRET }}
+        run: |
+          if [ -n "$DEMO_SECRET" ]; then
+            echo "GitHub secret is available."
+          else
+            echo "GitHub secret is missing."
+            exit 1
+          fi
  
   post_build_check:
     name: Post-Build Check
